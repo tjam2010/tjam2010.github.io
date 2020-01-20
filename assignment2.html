@@ -4,7 +4,7 @@
         <meta charset="utf-8"> 
         <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
 
-        <title>Example Student's HCDE 439 Physical Computing Page!</title> 
+        <title>TJ G's A2</title> 
 
         <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
 
@@ -12,14 +12,70 @@
     <body> 
 
         <div class="header">
-            <h1>Example Student's Assignment 2!</h1>
+            <h1>TJ Gascho's Assignment 2!</h1>
             <p>
-            <img src="red-panda.jpg" width=400></a>
+            <img src="a2_circuit.JPG" width=400></a>
+            Image 1. The final product of assignment two, a circuit with a green LED, a blue LED, and a button to switch between them.
             </p>
             <p>
             Here is all the documentation for assignment 2!
             </p>
         </div>
-        
+        <h2> Schematic </h2>
+        <img src="a2_schematic.JPG" width=400></a>
+        Image 2. A schematic of the LED x Button circuit. 
+        The green and blue LEDs are using 330 ohm resistors. Given a 3.2 voltage drop, and V=IR, 5-3.2=x*330, we have a current of 12mA.
+        The button uses a 10k ohm resistor. This is to function as a pulldown and to avoid leaving our 5V input hanging without an out. The 10k ohm resistor was chosen because it is enough to establish a LOW state when the button is not pressed. 
+        <h2> Circuit </h2>
+        <img src="a2_circuit.JPG" width=400></a>
+        Image 3. The final circuit, with three individually functional LEDs.
+        <h2> Code </h2>
+        <pre> 
+//initializes a variable for determining if the button is pressed
+int buttonState = 0;
+
+void setup() {
+  //establishes built in led as an output
+  pinMode(13, OUTPUT);
+  //establishes green led as an output
+  pinMode(10, OUTPUT);
+  //establishes blue led as an output
+  pinMode(9, OUTPUT);
+  //establishes pin 2 as an input for the button status
+  pinMode(2, INPUT);
+}
+
+void loop () {
+  //checks to see if button is pressed
+  buttonState = digitalRead(2);
+  //if the button is pressed
+  if (buttonState == HIGH) {
+    //turn on the built in LED
+    digitalWrite(13, HIGH);
+    // fade the brightness using a loop from 255 to 0
+    for (int i = 255; i > -1; i--) {
+      //set the green led brightness to the current number of the loop
+      analogWrite(10, i);
+      // wait .005 seconds
+      delay(5);
+    }
+  }
+  // if the button is not pressed
+  else {
+    //turn off the built in LED
+    digitalWrite(13, LOW);
+    // fade the brightness using a loop from 255 to 0
+    for (int i = 255; i > -1; i--) {
+      //set the blue led brightness to the current number of the loop
+      analogWrite(9, i);
+      // wait .005 seconds
+      delay(5);
+    }
+  }
+}
+</pre>
+        <h2> Circuit Operation </h2>   
+        <img src="a2_circuit.gif" width=400></a>
+        Image 4. The circuit operating such that the blue led flashes on and fades off. If the button is pressed, the green led performs the operation instead.
     </body>
 </html>
