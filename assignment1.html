@@ -1,93 +1,87 @@
-<!DOCTYPE html> 
-<html> 
-    <head> 
-        <meta charset="utf-8"> 
-        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+	<title>TJ G - A1</title >
+	<link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+  </head>
+  <header>
+      <h1>Assignment 1!</h1>
+  </header>
+  <body>
+    <img src="a1_circuit.JPG" width=400></a>
+    
+    Image 1. The final product of assignment one, a circuit with a green, yellow, and blue LED.
 
-        <title>TJ Gascho's HCDE 439 Physical Computing Page!</title> 
+    Here is all the documentation for assignment 1!
+    
+    <h2> Schematic </h2>
+    <img src="a1_schematic.jpg" width=400></a> 
+    Image 2. A schematic of the LED circuit. The green and blue LEDs are using 330 ohm resistors to reduce the brightness (and current) which was giving me a headache. The yellow LED uses a 220 ohm resistor because it helps to even out the brightness across the LEDs.
+    <h2> Circuit </h2>
+    <img src="a1_circuit.JPG" width=400></a> 
+    Image 3. The final circuit, with three individually functional LEDs.
+    <h2> Code </h2>
+    <pre> void setup() {
+    // initialize pin 13 as an output.
+    pinMode(13, OUTPUT);
+    // initialize pin 12 as an output.
+    pinMode(12, OUTPUT);
+    // initialize pin 11 as an output.
+    pinMode(11, OUTPUT);
 
-        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+  }
 
-    </head> 
-    <body> 
-
-        <div class="header">
-            <h1>TJ Gascho's Assignment 1!</h1>
-            <p>
-            <img src="a1_circuit.JPG" width=400></a>
-            Image 1. The final product of assignment one, a circuit with a green, yellow, and blue LED.
-            </p>
-            <p>
-            Here is all the documentation for assignment 1!
-            </p>
-        </div>
-        <h2> Schematic </h2>
-        <img src="a1_schematic.jpg" width=400></a>
-        Image 2. A schematic of the LED circuit. The green and blue LEDs are using 330 ohm resistors to reduce the brightness (and current) which was giving me a headache. The yellow LED uses a 220 ohm resistor because it helps to even out the brightness across the LEDs. 
-        <h2> Circuit </h2>
-        <img src="a1_circuit.JPG" width=400></a>
-        Image 3. The final circuit, with three individually functional LEDs.
-        <h2> Code </h2>
-        <pre> 
- void setup() {
-  // initialize pin 13 as an output.
-  pinMode(13, OUTPUT);
-  // initialize pin 12 as an output.
-  pinMode(12, OUTPUT);
-  // initialize pin 11 as an output.
-  pinMode(11, OUTPUT);
-
-}
-
-void loop() {
-  // turn the Green LED on
-  digitalWrite(13, HIGH);
-  // wait .6 seconds
-  delay(600);
-  // turn the Yellow LED on
-  digitalWrite(12, HIGH);
-  // wait .6 seconds
-  delay(600);
-  // turn the Blue LED on
-  digitalWrite(11, HIGH);
-  // wait .6 seconds
-  delay(600);
-  // turn the Green LED off
-  digitalWrite(13, LOW);
-  // wait .2 seconds
-  delay(200);
-  // turn the Yellow LED off
-  digitalWrite(12, LOW);
-  // wait .2 seconds
-  delay(200);
-  // turn the Blue LED off
-  digitalWrite(11, LOW);
-  // wait .6 seconds
-  delay(600);
-  // turn the Blue LED on
-  digitalWrite(11, HIGH);
-  // wait .6 seconds
-  delay(600);
-  // turn the Blue LED off
-  digitalWrite(11, LOW);
-  // turn the Yellow LED on
-  digitalWrite(12, HIGH);
-  // wait .6 seconds
-  delay(600);
-  // turn the Yellow LED off
-  digitalWrite(12, LOW);
-  // turn the Green LED on
-  digitalWrite(13, HIGH);
-  // wait .6 seconds
-  delay(600);
-  // turn the Green LED off
-  digitalWrite(13, LOW);
-  // wait .6 seconds
-  delay(600);
-}
-</pre>
-        <h2> Circuit Operation </h2>   
-        <img src="a1_circuit.gif" width=400></a>
-        Image 4. The circuit operating in the programmed pattern, which highlights that the LEDs can operate uniquely and simultaneously.
-    </body>
+  void loop() {
+    // turn the Green LED on
+    digitalWrite(13, HIGH);
+    // wait .6 seconds
+    delay(600);
+    // turn the Yellow LED on
+    digitalWrite(12, HIGH);
+    // wait .6 seconds
+    delay(600);
+    // turn the Blue LED on
+    digitalWrite(11, HIGH);
+    // wait .6 seconds
+    delay(600);
+    // turn the Green LED off
+    digitalWrite(13, LOW);
+    // wait .2 seconds
+    delay(200);
+    // turn the Yellow LED off
+    digitalWrite(12, LOW);
+    // wait .2 seconds
+    delay(200);
+    // turn the Blue LED off
+    digitalWrite(11, LOW);
+    // wait .6 seconds
+    delay(600);
+    // turn the Blue LED on
+    digitalWrite(11, HIGH);
+    // wait .6 seconds
+    delay(600);
+    // turn the Blue LED off
+    digitalWrite(11, LOW);
+    // turn the Yellow LED on
+    digitalWrite(12, HIGH);
+    // wait .6 seconds
+    delay(600);
+    // turn the Yellow LED off
+    digitalWrite(12, LOW);
+    // turn the Green LED on
+    digitalWrite(13, HIGH);
+    // wait .6 seconds
+    delay(600);
+    // turn the Green LED off
+    digitalWrite(13, LOW);
+    // wait .6 seconds
+    delay(600);
+  }
+  </pre>
+    <h2> Circuit Operation </h2>
+    <img src="a1_circuit.gif" width=400></a> 
+    Image 4. The circuit operating in the programmed pattern, which highlights that the LEDs can operate uniquely and simultaneously.
+  </body>
 </html>
