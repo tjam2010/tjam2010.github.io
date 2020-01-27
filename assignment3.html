@@ -36,14 +36,20 @@ void setup() {
   pinMode(11, OUTPUT);
   //sets analog 0 to be our sensor input
   pinMode(A0, INPUT);
+  //sets the baud rate for the serial monitor and enables said monitor
+  Serial.begin(9600);
 }
 
 //listens for changes in voltage and affects the led accordingly
 void loop() {
+  //provides a constant read-out of the unfiltered sensor value
+  Serial.println(analogRead(A0));
+  //lowest read A0 value = 370, (370 x .049 = 1.813 Volts)
+  //highest read A0 value = 730, (730 x .049 = 3.577 Volts)
   //constrains the sensor values to more accurately reflect possible voltage reads
-  int sensorVal = constrain(analogRead(A0),400,700);
+  int sensorVal = constrain(analogRead(A0),380,720);
   //maps sensed darkness with brighter led output and brightness with dim led output
-  int outputVal = map(sensorVal, 700, 400, 0, 255);
+  int outputVal = map(sensorVal, 720, 380, 0, 255);
   //outputs to the led depending upon the brightness sensed
   analogWrite(11, outputVal);
 }
