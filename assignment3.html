@@ -31,25 +31,22 @@
         Image 3. The final circuit, with three individually functional LEDs.
         <h2> Code </h2>
         <pre> 
-//the funciton to initialize pin modes
+//initializes pin modes
 void setup() {
   //sets digital pin 12 as our led output
-  pinMode(12, OUTPUT);
+  pinMode(11, OUTPUT);
   //sets analog 0 to be our sensor input
   pinMode(A0, INPUT);
 }
 
 //listens for changes in voltage and affects the led accordingly
 void loop() {
-  //listens to see if the voltage is less that 3.92 volts
-  if (analogRead(A0) < 800) {
-    //turns on the led
-    digitalWrite(12, HIGH);
-  }
-  else {
-    //turns off the led
-    digitalWrite(12, LOW);
-  }
+  //constrains the sensor values to more accurately reflect possible voltage reads
+  int sensorVal = constrain(analogRead(A0),400,700);
+  //maps sensed darkness with brighter led output and brightness with dim led output
+  int outputVal = map(sensorVal, 700, 400, 0, 255);
+  //outputs to the led depending upon the brightness sensed
+  analogWrite(11, outputVal);
 }
 </pre>
         <h2> Circuit Operation </h2>   
