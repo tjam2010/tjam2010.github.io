@@ -15,7 +15,7 @@
             <h1>TJ Gascho's Assignment 3!</h1>
             <p>
             <img src="a3_circuit.gif" width=400></a>
-            Image 1. The final product of assignment two, a circuit with a green LED, a blue LED, and a button to switch between them.
+            Image 1. The final product of assignment three, a circuit with a blue LED that changes based upon the amount of light recieved by a photoresistor.
             </p>
             <p>
             Here is all the documentation for assignment 2!
@@ -23,12 +23,12 @@
         </div>
         <h2> Schematic </h2>
         <img src="a3_schematic.JPG" width=400></a>
-        Image 2. A schematic of the LED x Button circuit. 
+        Image 2. A schematic of the LED x Photoresistor circuit. 
         The green and blue LEDs are using 330 ohm resistors. Given a 3.2 voltage drop, and V=IR, 5-3.2=x*330, we have a current of 12mA.
         The button uses a 10k ohm resistor. This is to function as a pulldown and to avoid leaving our 5V input hanging without an out. The 10k ohm resistor was chosen because it is enough to establish a LOW state when the button is not pressed. 
         <h2> Circuit </h2>
         <img src="a3_circuit.JPG" width=400></a>
-        Image 3. The final circuit, with three individually functional LEDs.
+        Image 3. The final circuit, with a blue LED, a 330 ohm resistor, a photoresistor, and a 10k ohm resistor.
         <h2> Code </h2>
         <pre>//initializes pin modes
 void setup() {
@@ -56,6 +56,6 @@ void loop() {
 </pre>
         <h2> Circuit Operation </h2>   
         <img src="a3_circuit.gif" width=400></a>
-        Image 4. The circuit operating such that the blue led flashes on and fades off. If the button is pressed, the green led performs the operation instead.
+        Image 4. The circuit operating such that the blue led becomes darker as the photoresistor picks up more brightness, and brighter as the resistor senses less brightnes.
     </body>
 </html>
