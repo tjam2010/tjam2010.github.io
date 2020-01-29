@@ -18,14 +18,24 @@
             Image 1. The final product of assignment three, a circuit with a blue LED that changes based upon the amount of light recieved by a photoresistor.
             </p>
             <p>
-            Here is all the documentation for assignment 2!
+            Here is all the documentation for assignment 3!
             </p>
         </div>
         <h2> Schematic </h2>
         <img src="a3_schematic.JPG" width=400></a>
         Image 2. A schematic of the LED x Photoresistor circuit. 
-        The green and blue LEDs are using 330 ohm resistors. Given a 3.2 voltage drop, and V=IR, 5-3.2=x*330, we have a current of 12mA.
-        The button uses a 10k ohm resistor. This is to function as a pulldown and to avoid leaving our 5V input hanging without an out. The 10k ohm resistor was chosen because it is enough to establish a LOW state when the button is not pressed. 
+        The blue LEDs is using a 330 ohm resistor. Given a 3.2 voltage drop, and V=IR, 5-3.2=x*330, we have a current of 12mA,which is safe for the LED.
+        The photoresistor works alongside a 10k ohm resistor. This allows there to be a small amount of current without preventing data from being read by our A0 pin.
+        The voltage recorded by the analog read at the voltage divide (the wire going to pin A0), is dependent upon the photoresistor's light input.
+        That voltage can be calculated by finding the current across both resistors...
+        V = I*(R1+R2)
+        5 = I*(R1+10,000)
+        5/(R1+10,000) = I
+        and then calculating the voltage remaining after R1 and before R2...
+        Vout = Itotal*R2
+        Vout = (5*10,000)/(R1+10,000)
+        Vout = 50,000/(R1+10,000)
+        where R1 is dependent upon the amount of light it is receiving. This value of voltage is important for our code, as we will map it to the brightness of our LED.
         <h2> Circuit </h2>
         <img src="a3_circuit.JPG" width=400></a>
         Image 3. The final circuit, with a blue LED, a 330 ohm resistor, a photoresistor, and a 10k ohm resistor.
