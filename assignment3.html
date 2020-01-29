@@ -15,6 +15,7 @@
             <h1>TJ Gascho's Assignment 3!</h1>
             <p>
             <img src="a3_circuit.gif" width=400></a>
+            <br/>        
             Image 1. The final product of assignment three, a circuit with a blue LED that changes based upon the amount of light recieved by a photoresistor.
             </p>
             <p>
@@ -24,9 +25,11 @@
         <h2> Schematic </h2>
         <img src="a3_schematic.JPG" width=400></a>
         Image 2. A schematic of the LED x Photoresistor circuit. 
+        <br/>        
         The blue LEDs is using a 330 ohm resistor. Given a 3.2 voltage drop, and V=IR, 5-3.2=x*330, we have a current of 12mA,which is safe for the LED.
         The photoresistor works alongside a 10k ohm resistor. This allows there to be a small amount of current without preventing data from being read by our A0 pin.
         The voltage recorded by the analog read at the voltage divide (the wire going to pin A0), is dependent upon the photoresistor's light input.
+        <pre>        
         That voltage can be calculated by finding the current across both resistors...
         V = I*(R1+R2)
         5 = I*(R1+10,000)
@@ -35,9 +38,12 @@
         Vout = Itotal*R2
         Vout = (5*10,000)/(R1+10,000)
         Vout = 50,000/(R1+10,000)
-        where R1 is dependent upon the amount of light it is receiving. This value of voltage is important for our code, as we will map it to the brightness of our LED.
+        where R1 is dependent upon the amount of light it is receiving. 
+        </pre>
+        This value of voltage is important for our code, as we will map it to the brightness of our LED.
         <h2> Circuit </h2>
         <img src="a3_circuit.JPG" width=400></a>
+        <br/> 
         Image 3. The final circuit, with a blue LED, a 330 ohm resistor, a photoresistor, and a 10k ohm resistor.
         <h2> Code </h2>
         <pre>//initializes pin modes
@@ -66,6 +72,7 @@ void loop() {
 </pre>
         <h2> Circuit Operation </h2>   
         <img src="a3_circuit.gif" width=400></a>
+        <br/> 
         Image 4. The circuit operating such that the blue led becomes darker as the photoresistor picks up more brightness, and brighter as the resistor senses less brightnes.
     </body>
 </html>
