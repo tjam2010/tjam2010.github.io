@@ -27,21 +27,28 @@
         <br/> 
         Image 2. A schematic of the Transistor x IR sensor circuit. 
         <br/>        
-        The blue LEDs is using a 330 ohm resistor. Given a 3.2 voltage drop, and V=IR, 5-3.2=x*330, we have a current of 12mA,which is safe for the LED.
-        The photoresistor works alongside a 10k ohm resistor. This allows there to be a small amount of current without preventing data from being read by our A0 pin.
-        The voltage recorded by the analog read at the voltage divide (the wire going to pin A0), is dependent upon the photoresistor's light input.
-        <pre>        
-        That voltage can be calculated by finding the current across both resistors...
-        V = I*(R1+R2)
-        5 = I*(R1+10,000)
-        5/(R1+10,000) = I
-        and then calculating the voltage remaining after R1 and before R2...
-        Vout = Itotal*R2
-        Vout = (5*10,000)/(R1+10,000)
-        Vout = 50,000/(R1+10,000)
-        where R1 is dependent upon the amount of light it is receiving. 
-        </pre>
-        This value of voltage is important for our code, as we will map it to the brightness of our LED.
+        <h3> The Infrared Circuit</h3>
+For the IR remote and receiver setup, we use pin ~6 as our input, connecting it to the Y pin on the receiver. We wire up the receiver to 5 volts to the R pin and ground to the G pin, per the receiver’s specifications (http://www.circuitbasics.com/arduino-ir-remote-receiver-tutorial/).
+<br/>
+<h3> The Transistor Circuit</h3>
+For our LED strip and transistor circuit, we first have our 12 volt external power supply’s positive end connected to the LED strip and the ground connected to our other grounds before then connecting to the Arduino ground. With the positive end of the LED strip receiving 12 volts, we connect the LED strip’s ground to the middle leg of our N-Fet transistor, which is the Drain. Since current flows through the transistor from Drain to Source, the Source leg is connected to ground. The transistor’s Gate leg is finally connected to our output pin, pin ~9, capable of pulse width modulation and thus analog writing.
+<br/>
+<h3> The Safety Calculations</h3>
+Our IR receiver needs 5 volts to be powered on and requires no additional resistors, so it can be wired as is. Our external power source is rated to output 12 volts and 2 amps. The LED strip we are using is rated to handle 12 volts. Given that it is comprised of many parallel sections of 3 white LEDs and a resistor in series, and that a typical white LED has a 3.6 voltage drop, we can find that…
+<pre>3 x 3.2 volts = a 9.6 total voltage drop
+12 volts (our power supply) - that 9.6 voltage drop = 2.4 total volts going across the resistor
+
+The resistance, being 181 ohms in a section, with 100 sections, can be calculated as:
+1/R1 + 1/R2 + 1/Retc = 1/Rtotal
+100/181 = 1/Rtotal
+1.81 ohms = Rtotal
+
+Given Vtotal = Itotal * Rtotal
+2.4 = Itotal * 1.81
+1.31 amps = Itotal
+</pre>
+The N-Fet transistor that we are using is rated to handle a general maximum of 60 volts and 32 amps. Based upon these ratings and calculations, all of our components should be able to handle the power we are using and require no additional resistors or voltage drops to function properly.
+
         <h2> Circuit </h2>
         <img src="a4_circuit.JPG" width=400></a>
         <br/> 
