@@ -1,0 +1,112 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>TJ G's A5</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>TJ Gascho's Assignment 5!</h1>
+            <p>
+            <img src="a5_circuit.gif" width=400></a>
+            <br/>        
+            Image 1. The final product of assignment four, a circuit with an LED strip and an IR sensor and remote.
+            </p>
+            <p>
+            Here is all the documentation for assignment 5!
+            </p>
+        </div>
+        <h2> Schematic </h2>
+        <img src="a5_schematic.JPG" width=400></a>
+        <br/> 
+        Image 2. A schematic of the Transistor x IR sensor circuit. The schematic for one out of the 100 parallel segments of the LED strip is also included.
+        <br/>        
+        <h3> The Infrared Circuit</h3>
+For the IR remote and receiver setup, we use pin ~6 as our input, connecting it to the Y pin on the receiver. We wire up the receiver to 5 volts to the R pin and ground to the G pin, per the receiver’s specifications (http://www.circuitbasics.com/arduino-ir-remote-receiver-tutorial/).
+<br/>
+<h3> The Transistor Circuit</h3>
+For our LED strip and transistor circuit, we first have our 12 volt external power supply’s positive end connected to the LED strip and the ground connected to our other grounds before then connecting to the Arduino ground. With the positive end of the LED strip receiving 12 volts, we connect the LED strip’s ground to the middle leg of our N-Fet transistor, which is the Drain. Since current flows through the transistor from Drain to Source, the Source leg is connected to ground. The transistor’s Gate leg is finally connected to our output pin, pin ~9, capable of pulse width modulation and thus analog writing.
+<br/>
+<h3> The Safety Calculations</h3>
+Our IR receiver needs 5 volts to be powered on and requires no additional resistors, so it can be wired as is. Our external power source is rated to output 12 volts and 2 amps. The LED strip we are using is rated to handle 12 volts. Given that it is comprised of many parallel sections of 3 white LEDs and a resistor in series, and that a typical white LED has a 3.6 voltage drop, we can find that…
+<pre>3 x 3.2 volts = a 9.6 total voltage drop
+12 volts (our power supply) - that 9.6 voltage drop = 2.4 total volts going across the resistor
+
+The resistance, being 181 ohms in a section, with 100 sections, can be calculated as:
+1/R1 + 1/R2 + 1/Retc = 1/Rtotal
+100/181 = 1/Rtotal
+1.81 ohms = Rtotal
+
+Given Vtotal = Itotal * Rtotal
+2.4 = Itotal * 1.81
+1.31 amps = Itotal
+</pre>
+The N-Fet transistor that we are using is rated to handle a general maximum of 60 volts and 32 amps. Our maximum of 2.4 volts and 1.81 amps are much lower than the possible maximum. Based upon these ratings and calculations, all of our components should be able to handle the power we are using and require no additional resistors or voltage drops to function properly.
+
+        <h2> Circuit </h2>
+        <img src="a5_circuit.JPG" width=400></a>
+        <br/> 
+        Image 3. The final circuit, with an LED strip attached to a 12v power supply, an N-Fet transistor, and an IR receiver.
+        <h2> Code </h2>
+        <pre>// includes the library for our infrared remote in this sketch
+#include &#60;IRremote.h&#62;
+
+// sets the IR receiver pin to 6
+IRrecv irrecv(6);
+// establishes an object to later decode receiever information
+decode_results results;
+// establishes a global variable for manipulating LED brightness
+int brightness;
+
+// the setup function runs once when you press reset or power the board
+void setup() {
+  // sets the data rate to 9600 bits per second
+  Serial.begin(9600);
+  // enables the IR receiver
+  irrecv.enableIRIn();
+  // blinks the Arduino board's LED every time input is received
+  irrecv.blink13(true);
+  // initializes pin 9 as an output.
+  pinMode(9, OUTPUT);
+  // initializes the brightness as 0 out of 255
+  brightness = 0;
+}
+
+// the loop function runs over and over again forever
+void loop() {
+  // if input is received by our IR sensor, runs the following code and saves the value 
+  if (irrecv.decode(&results)) {
+    // if the input is from pressing the up button
+    if (results.value == 16748655) {
+      // if the brightness can still be increased
+      if (brightness <= 240) {
+        // increases the brightness by 15 (out of 255)
+        brightness += 15;
+      }
+      // otherwise, if the input is from pressing the down button
+    } else if (results.value == 16769055) {
+      // if the brightness can still be decreased
+      if (brightness >= 15) {
+        // decreases the brightness by 15 (out of 255)
+        brightness -= 15;
+      }
+    }
+    // sets the LED strip to the current brightness value
+    analogWrite(9, brightness);
+    // resets the receiver and allows it to listen for input again
+    irrecv.resume();
+  }
+}
+</pre>
+        <h2> Circuit Operation </h2>   
+        <img src="a5_circuit.gif" width=400></a>
+        <br/> 
+        Image 4. The circuit operating such that the led strip increases in brightness when the up button is pressed and decreases when the down button is pressed.
+    </body>
+</html>

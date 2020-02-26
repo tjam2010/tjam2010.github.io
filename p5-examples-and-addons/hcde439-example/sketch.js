@@ -1,5 +1,5 @@
 var serial; // variable to hold an instance of the serialport library
-var portName = '/dev/ttyACM0' //rename to the name of your port
+var portName = 'COM6' //rename to the name of your port
 var datain; //some data coming in over serial!
 var xPos = 0;
 
@@ -47,7 +47,7 @@ function portClose() {
 function serialEvent() {
   if (serial.available()) {
   	datain = Number(serial.readLine());
-        //console.log(datain);
+    // console.log(datain);
   } 
 }
 
@@ -72,7 +72,7 @@ function draw() {
   background(0);
   fill(255);
 
-  if (datain == 0) {
+  if (datain == 1) {
       text("button pressed: YES", 30,30);
   } else {
       text("button pressed: NO", 30,30);
