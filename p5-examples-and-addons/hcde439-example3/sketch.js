@@ -1,5 +1,8 @@
-var serial; // variable to hold an instance of the serialport library
-var portName = 'COM6' //rename to the name of your port
+// this variable is initialized to hold an instance of the serialport library
+var serial; 
+// this variable is the name of the port used
+var portName = 'COM6'
+// this variable is initialized to receive our input data
 var inData;
 
 
@@ -50,7 +53,7 @@ function serialEvent() {
 }
 
 function keyPressed() {
-    //console.log("writing key");
+    // this line sends the value of the key to the serial port
     serial.write(key);
 }
 
