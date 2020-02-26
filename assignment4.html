@@ -53,28 +53,57 @@ The N-Fet transistor that we are using is rated to handle a general maximum of 6
         <img src="a4_circuit.JPG" width=400></a>
         <br/> 
         Image 3. The final circuit, with an LED strip attached to a 12v power supply, an N-Fet transistor, and an IR receiver.
-        <h2> Code </h2>
-        <h3>Arduino Code</h3>
-        <pre>// the setup function runs once when you press reset or power the board
+        <pre>// includes the library for our infrared remote in this sketch
+          #include &#60;IRremote.h&#62;
+          
+          // sets the IR receiver pin to 6
+          IRrecv irrecv(6);
+          // establishes an object to later decode receiever information
+          decode_results results;
+          // establishes a global variable for manipulating LED brightness
+          int brightness;
+          
+          // the setup function runs once when you press reset or power the board
           void setup() {
             // sets the data rate to 9600 bits per second
             Serial.begin(9600);
+            // enables the IR receiver
+            irrecv.enableIRIn();
+            // blinks the Arduino board's LED every time input is received
+            irrecv.blink13(true);
+            // initializes pin 9 as an output.
+            pinMode(9, OUTPUT);
+            // initializes the brightness as 0 out of 255
+            brightness = 0;
           }
           
           // the loop function runs over and over again forever
           void loop() {
-            // input from the x-direction movement of the joystick, ranges from 0 to 1023
-            int s1 = analogRead(1);
-            // input from the x-direction movement of the joystick, ranges from 0 to 1023
-            int s2 = analogRead(2);
-            // prints out the x value of the joystick, followed by the y value
-            Serial.println(String("[") + s1 + String(",") + s2 + String("]"));
-          }          
-        </pre>
-        <h3>p5 Code</h3>
-        <pre>
+            // if input is received by our IR sensor, runs the following code and saves the value 
+            if (irrecv.decode(&results)) {
+              // if the input is from pressing the up button
+              if (results.value == 16748655) {
+                // if the brightness can still be increased
+                if (brightness <= 240) {
+                  // increases the brightness by 15 (out of 255)
+                  brightness += 15;
+                }
+                // otherwise, if the input is from pressing the down button
+              } else if (results.value == 16769055) {
+                // if the brightness can still be decreased
+                if (brightness >= 15) {
+                  // decreases the brightness by 15 (out of 255)
+                  brightness -= 15;
+                }
+              }
+              // sets the LED strip to the current brightness value
+              analogWrite(9, brightness);
+              // resets the receiver and allows it to listen for input again
+              irrecv.resume();
+            }
+          }
           
-        </pre>
+          </pre>
         <h2> Circuit Operation </h2>   
         <img src="a4_circuit.gif" width=400></a>
         <br/> 
