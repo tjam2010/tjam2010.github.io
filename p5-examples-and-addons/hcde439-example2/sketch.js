@@ -19,7 +19,7 @@ function setup() {
  
   serial.list();                      // lists the serial ports
   serial.open(portName);              // opens a serial port
-  createCanvas(1200, 800);            // sets the display size
+  createCanvas(1422, 650);            // sets the display size
   background(0x08, 0x16, 0x40);       // sets the background color
 }
  
@@ -92,6 +92,12 @@ function graphData(newData) {
   } else {
     // pass
   }
+}
+
+// if a key is pressed
+function keyPressed() {
+  // this line sends the value of the key to the serial port
+  serial.write(key);
 }
 
 // present a visualization of the input data
