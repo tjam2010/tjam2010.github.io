@@ -16,8 +16,7 @@
             <p>
             <img src="a6_circuit.gif" width=400></a>
             <br/>        
-            Image 1. The final product of assignment five, a joystick visualization through a website.
-            </p>
+            Image 1. The final product of assignment six, a joystick visualization through a website. It also sets the LED to the value of the key typed into the browser.            </p>
             <p>
             Here is all the documentation for assignment 6!
             </p>
@@ -25,18 +24,22 @@
         <h2> Schematic </h2>
         <img src="a6_schematic.JPG" width=400></a>
         <br/> 
-        Image 2. A schematic of the joystick connected to the Arduino following the given documentation. Resistors within the joystick allow for safe and direct connection to power.
+        Image 2. A schematic of the joystick connected to the Arduino following the given documentation. Resistors within the joystick allow for safe and direct connection to power. The blue LED is using a 330 ohm resistor. Given a 3.2 voltage drop, and V=IR, 5-3.2=x*330, we have a current of 12mA, which is safe for the LED.
         <br/>
         <h2> Circuit </h2>
         <img src="a6_circuit.JPG" width=400></a>
         <br/> 
-        Image 3. The final circuit, with a joystick and an html page running javascript.
+        Image 3. The final circuit, with a joystick, an LED, and a webpage running javascript.
         <h2> Code </h2>
         <h3>Arduino Code</h3>
         <pre>// the setup function runs once when you press reset or power the board
 void setup() {
   // sets the data rate to 9600 bits per second
   Serial.begin(9600);
+  // set the timeout for parseInt
+  Serial.setTimeout(10);
+  // set pin 5 to ouput mode
+  pinMode(5, OUTPUT);
 }
 
 // the loop function runs over and over again forever
@@ -47,6 +50,16 @@ void loop() {
   int s2 = analogRead(2);
   // prints out the x value of the joystick, followed by the y value
   Serial.println(String("[") + s1 + String(",") + s2 + String("]"));
+
+  // check to see if there is input serial data
+  if (Serial.available() > 0) {
+    // save the input data to a variable
+    int inByte = Serial.read();
+    // send back the input as raw binary data
+    Serial.write(inByte);
+    // use the input data to set the LED brightness
+    analogWrite(5, inByte);
+  }
 }</pre>
         <h3>p5 Code</h3>
         <pre>// this variable is initialized to hold an instance of the serialport library
@@ -70,7 +83,7 @@ function setup() {
   
   serial.list();                      // lists the serial ports
   serial.open(portName);              // opens a serial port
-  createCanvas(1200, 800);            // sets the display size
+  createCanvas(1422, 650);            // sets the display size
   background(0x08, 0x16, 0x40);       // sets the background color
 }
   
@@ -145,6 +158,12 @@ function graphData(newData) {
   }
 }
 
+// if a key is pressed
+function keyPressed() {
+  // this line sends the value of the key to the serial port
+  serial.write(key);
+}
+
 // present a visualization of the input data
 function draw() {
   stroke('rgba(0,255,0,0.25)'); // green
@@ -157,6 +176,6 @@ function draw() {
         <h2> Circuit Operation </h2>   
         <img src="a6_circuit.gif" width=400></a>
         <br/> 
-        Image 4. The circuit operating such that movement in the x direction is graphed in green and movement in the y direction is graphed in blue. The data input from our analogRead function ranges from 0 to 1023. When the joystick is in the middle, the x and y values are both about 500. When left and right movement is shown, it is in green where 1023 is left and right is 0 (I am holding th joystick upside down, so this is relatively true but in actuality, left is mapped to 0). Up and down movements are in blue where 1023 is given with the joystick at the bottom and 0 is the top. Again this is because I am holding the joystick upside down and would be reversed in actuality. The turquoise is the combination of the x and values.
+        Image 4. The circuit operating such that movement in the x direction is graphed in green and movement in the y direction is graphed in blue. The data input from our analogRead function ranges from 0 to 1023. When the joystick is in the middle, the x and y values are both about 500. When left and right movement is shown, it is in green where 1023 is left and right is 0 (I am holding th joystick upside down, so this is relatively true but in actuality, left is mapped to 0). Up and down movements are in blue where 1023 is given with the joystick at the bottom and 0 is the top. Again this is because I am holding the joystick upside down and would be reversed in actuality. The turquoise is the combination of the x and values. <br/> When a key on the keyboard is pressed while the website is open, it sends the value of the key to the Arduino. The Arduino code then sets the LED brightness to be whatever that input value was.
     </body>
 </html>
