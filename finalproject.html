@@ -33,7 +33,7 @@
         <div>
           <h1>Technical Documentation</h1>
           <h2> Schematic </h2>
-          <img src="fp_schematic.JPG" style="transform:rotate(90deg);" width=400></a>
+          <img src="fp_schematic.JPG" style="transform:rotate(90deg);" height=400></a>
           <br/> 
           Image 2. A schematic of the 3 part circuit.
           <br/> 
@@ -41,20 +41,30 @@
           The pitch controlling portion of the project uses one ultrasonic sensor and a passive buzzer. Our passive buzzer can operate between 4 and 8 volts, so the default output for a pin of 5 volts is fine for our purposes. The ultrasonic sensors have interal resistance, so we don't need to calculate for resistors ourselves. The Vcc pin is rated for 5 volts or more, so we can power that with our direct 5 volt supply, and we can connect the ground pin to our Arduino's ground. The trigger pin is used to send a high frequency sound and the echo pin recieves it. We use a library to calculate a distance from the returned values and can set the pins in our code, so we can plug our trigger receiving input into pin 13 and our echo outputting to the Arduino into pin 12, though this could be changed in the code. We will be using the input from this sensor in the code to set our tone frequencies.
           <br/> 
           <h3>Volume</h3>
-          Volume control is slightly more complicated than the pitch. According to the Elegoo Kit Specs found <a src="http://www.elegoo.com/download/">here</a>, our buzzer can be directly attached to an Arduino pin to maximize its volume. Because the buzzer is passive, we need to manipulate the current going through the buzzer to change the volume. To do this, one could ideally use a digital potentiometer. In completing this project, I did not have one, so I instead employed two photoresistors and an LED. The LED is white and uses a 100 ohm resistor. Because our input voltage is 5 volts and the white LED has a drop of approximately 3.2 volts:
+          Volume control is slightly more complicated than the pitch. According to the Elegoo Kit Specs found <a href="http://www.elegoo.com/download/">here</a>, our buzzer can be directly attached to an Arduino pin to maximize its volume. Because the buzzer is passive, we need to manipulate the current going through the buzzer to change the volume. To do this, one could ideally use a digital potentiometer. In completing this project, I did not have one, so I instead employed two photoresistors and an LED. The LED is white and uses a 100 ohm resistor. Because our input voltage is 5 volts and the white LED has a drop of approximately 3.2 volts:
           <pre>V = I x R
 5-3.2 = .02 x R
 1.8/.02 = R
 90 = R</pre>
-          Our minimum resistance is 90 ohms. I used a 100 ohm resistor to get close to that minimum resistance and maximum brightness to most effectively interact with the light-sensing photoresistors. The photoresistors are wired in series with the buzzer, but in parallel with each other to result in half the resistance of a single photoresistor. The photoresistors are then pointed directly at the changing LED so that they can react accordingly. Finally, of course, we use an ultrasonic sensor in the same way as the first one (though we use pins 11 and 10), however in this case we map the distance to change the brightness of the LED, where a brighter LED means a lower resistance, larger current, and greater volume.
+          Our minimum resistance is 90 ohms. I used a 100 ohm resistor to get close to that minimum resistance and maximum brightness to most effectively interact with the light-sensing photoresistors. The photoresistors are wired in series with the buzzer, but in parallel with each other to result in half the resistance of a single photoresistor. 
           <pre>1/R1 + 1/R2 = 1/Rtotal
 1/R-photo + 1/R-photo = 1/Rtotal
 2/R-photo = 1/Rtotal
 1/2 R-photo = Rtotal</pre>
-          This reduced resistance allows for a louder overall buzzer when the resistance is a bit higher, which I decided was needed after seeing how quiet the buzzer was otherwise.
+          This reduced resistance allows for a louder overall buzzer when the resistance is a bit higher, which I decided was needed after seeing how quiet the buzzer was otherwise. The photoresistors are then pointed directly at the changing LED so that they can react accordingly. Finally, of course, we use an ultrasonic sensor in the same way as the first one (though we use pins 11 and 10), however in this case we map the distance to change the brightness of the LED, where a brighter LED means a lower resistance, larger current, and greater volume.
           <br/> 
           <h3>Tempo</h3>
-
+          Our last feature is the ability to change the tempo of the notes played, or more specifically to alter the beat duration and spacing. To do this, we have implemented a button which uses code to determine how long it is pressed for. It then sets the beat duration to that length. The button has input from our direct 5V supply and outputs to pin 8, which receives the input to determine the pressed state. The button uses a 10k ohm resistor, which reduces the amount of current drawn. 
+          <pre>V = I x R
+5 = I x 10,000
+5/10,000 = I
+.0005 amps = I</pre>
+          This is simply because we do not need a large amount and want to retain safe operation in case of mistakes, but still need enough to determine whether the button is pressed or not. The 10k ohm resistor allows for a LOW state when the button is not pressed and a HIGH state when the button is pressed. The resistor functions as a pulldown and sinks remaining current to provide our 5V input another out. We also have a red LED to show the set duration, where it blinks the duration and remains off for double that time. We have it wired up to pin 7 with a 220 ohm resistor. Given that a red LED has a voltage drop of 1.8 volts:
+          <pre>V = I x R
+5-1.8 = .02 x R
+3.2/.02 = R
+160 = R</pre>
+          Our minimum resistance is 160 ohms. I used a 220 ohm resistor because the brightness is not essential and I had plenty 220 ohm resistors available to me. This light is programmed to blink only once the button is pressed and is primarily to indicate the current beat setting.
           <br/> 
           <br/>
           <h2> Circuit </h2>
