@@ -13,7 +13,7 @@
         <div class="header">
           <h1>TJ Gascho's Final Project!</h1>
           <p>
-          <img src="fp_circuit.gif" width=400/>
+          <img src="fp_circuit.gif" image-orientation="from-image" width=400/>
           <br/>        
           Image 1. An animation of my theremin in action.</p>
           </p>
@@ -33,7 +33,7 @@
         <div>
           <h1>Technical Documentation</h1>
           <h2> Schematic </h2>
-          <img src="fp_schematic.JPG" style="transform:rotate(90deg);" height=400></a>
+          <img src="fp_schematic.JPG" style="transform:rotate(90deg);" width=400></a>
           <br/> 
           Image 2. A schematic of the 3 part circuit.
           <br/> 
@@ -45,7 +45,7 @@
           <pre>V = I x R
 5-3.2 = .02 x R
 1.8/.02 = R
-90 = R</pre>
+90 ohms = R</pre>
           Our minimum resistance is 90 ohms. I used a 100 ohm resistor to get close to that minimum resistance and maximum brightness to most effectively interact with the light-sensing photoresistors. The photoresistors are wired in series with the buzzer, but in parallel with each other to result in half the resistance of a single photoresistor. 
           <pre>1/R1 + 1/R2 = 1/Rtotal
 1/R-photo + 1/R-photo = 1/Rtotal
@@ -63,12 +63,12 @@
           <pre>V = I x R
 5-1.8 = .02 x R
 3.2/.02 = R
-160 = R</pre>
+160 ohms = R</pre>
           Our minimum resistance is 160 ohms. I used a 220 ohm resistor because the brightness is not essential and I had plenty 220 ohm resistors available to me. This light is programmed to blink only once the button is pressed and is primarily to indicate the current beat setting.
           <br/> 
           <br/>
           <h2> Circuit </h2>
-          <img src="fp_circuit.JPG" width=400></a>
+          <img src="fp_circuit.JPG" width=800></a>
           <br/> 
           Image 3. The final circuit, with two ultrasonic sensors, two photoresistors, two leds, a button, and a buzzer.
           <h2> Code </h2>
