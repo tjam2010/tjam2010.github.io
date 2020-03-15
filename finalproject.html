@@ -21,10 +21,12 @@
         <div>
           <h1>Concept</h1>
           <img src="fp_process.JPG" width=400/>
-          In brainstorming...
+          <br/>        
+          In brainstorming what my final project should be, I considered many ideas. I thought about how I could apply my various interests to the project and found myself gravitating towards a musical theme- something a bit more light-hearted in the midst of my other more serious academics. Thinking about loop pedals and equalizers, I started to wonder what ways I could create something both practical and unique.
           <br/>
           <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Theramin-Alexandra-Stepanoff-1930.jpg" width=400/>
-          I ultimately decided that I wanted to take a crack at the theremin, albeit a digital one. A theremin is...
+          <br/>        
+          I ultimately decided that I wanted to take a crack at making a theremin, albeit a digital one. A theremin is an electronic musical instrument which does not require the musician to touch it. In a theremin, both pitch and volume can be altered by moving one's hands closer and further from it. Based on this instrument, I decided to set out to create an Arduino product which could sense the distance of one's hands and play the matching tones. The reason I chose to use Arduino as opposed to creating a theremin closer to the original is so that I might manipulate the sounds coming from the device or easily convert them to digital music in the future.
         </div>
         <div>
           <h1>Technical Documentation</h1>
@@ -44,8 +46,128 @@
           <br/> 
           Image 3. The final circuit, with two ultrasonic sensors, two photoresistors, two leds, a button, and a buzzer.
           <h2> Code </h2>
-          <pre>
-</pre>
+          <pre>#include &#60;NewPing.h&#62; // import the ultrasonic sensor library
+#include "pitches.h"      // import frequency values as note constants
+#include "TonePlayer.h"   // import basic Arduino tone functions
+
+NewPing sonar[2] = {      // Create an array of sensors
+  NewPing(13, 12, 200),   // Set the pitch sensor pins to 13 and 12, with a max distance of 200cm before reading as no value
+  NewPing(11, 10, 50)     // Set the volume sensor pins to 11 and 10, with a max distance of 50cm before reading as no value
+};
+
+TonePlayer tone1 (TCCR1A, TCCR1B, OCR1AH, OCR1AL, TCNT1H, TCNT1L); // Set up a TonePlayer object
+int notes[] = {           // create an array of note constant frequencies
+  NOTE_C1 , NOTE_CS1 , NOTE_D1 , NOTE_DS1 , NOTE_E1 , NOTE_F1 , NOTE_FS1 , NOTE_G1 , NOTE_GS1 , NOTE_A1 , NOTE_AS1 , NOTE_B1 , NOTE_C2 , NOTE_CS2 , NOTE_D2 , NOTE_DS2
+  , NOTE_E2 , NOTE_F2 , NOTE_FS2 , NOTE_G2 , NOTE_GS2 , NOTE_A2 , NOTE_AS2 , NOTE_B2 , NOTE_C3 , NOTE_CS3 , NOTE_D3 , NOTE_DS3 , NOTE_E3 , NOTE_F3 , NOTE_FS3 , NOTE_G3 , NOTE_GS3,
+  NOTE_A3 , NOTE_AS3 , NOTE_B3 , NOTE_C4 , NOTE_CS4 , NOTE_D4 , NOTE_DS4 , NOTE_E4 , NOTE_F4 , NOTE_FS4 , NOTE_G4 , NOTE_GS4 , NOTE_A4 , NOTE_AS4 , NOTE_B4 , NOTE_C5 , NOTE_CS5 ,
+  NOTE_D5 , NOTE_DS5 , NOTE_E5 , NOTE_F5 , NOTE_FS5 , NOTE_G5 , NOTE_GS5 , NOTE_A5 , NOTE_AS5 , NOTE_B5 , NOTE_C6 , NOTE_CS6 , NOTE_D6 , NOTE_DS6 , NOTE_E6 , NOTE_F6 , NOTE_FS6 , NOTE_G6 ,
+  NOTE_GS6 , NOTE_A6 , NOTE_AS6 , NOTE_B6 , NOTE_C7 , NOTE_CS7 , NOTE_D7 , NOTE_DS7 , NOTE_E7 , NOTE_F7 , NOTE_FS7 , NOTE_G7 , NOTE_GS7 , NOTE_A7 , NOTE_AS7 , NOTE_B7
+};
+int octavestart[] = {     // create an array of octave starting indices for the notes array
+  0, 12, 24, 48, 60, 72, 84, 96, 108, 120, 132, 144, 156
+};
+int octaveend[] = {       // create an array of octave ending indices for the notes array
+  11, 23, 47, 59, 71, 83, 95, 107, 119, 131, 143, 155, 167
+};
+int octave = 2;           // set the default octave to be the 3rd
+
+boolean setLength = false;  // create a boolean for if beat length is currently being set
+int startTime;            // initialize a variable for determining the beat start time
+int duration = 0;         // initialize a variable for determining the beat length
+int buttonState = 0;      // initialize a variable to save whether the button is pressed
+
+void setup()
+{
+  Serial.begin(115200); // set the baud rate to 115200
+  pinMode(6, OUTPUT);   // set up white LED for output
+  pinMode(7, OUTPUT);   // set up red LED for output
+  pinMode(8, INPUT);    // set up button for input
+  pinMode(9, OUTPUT);   // set up buzzer for output
+}
+
+void loop()
+{
+  // checks to see if button is pressed
+  buttonState = digitalRead(8);
+  // if the button is pressed & the timer isn't running
+  if (!setLength && buttonState == HIGH) {
+    // turn on the red LED
+    digitalWrite(7, HIGH);
+    // set startTime to the current time
+    startTime = millis();
+    // indicate that the beat length is being set
+    setLength = true;
+  }
+  // timer running, button released
+  if (setLength && buttonState == LOW) {
+    // turn off the red LED
+    digitalWrite(7, LOW);
+    // indicate that the beat length is no longer being set
+    setLength = false;
+    // set the duration to difference between the current time and the start time
+    duration = millis() - startTime;
+    // print out the duration
+    Serial.print ("button press time in milliseconds: ");
+    Serial.println (duration);
+  }
+
+  // if the beat length is not being set
+  if (!setLength) {
+    // wait for .1 seconds
+    delay(100);
+
+    // set pitchVal to the pitch sensor distance, with a min of 0 cm and a max of 36 cm
+    int pitchVal = constrain(sonar[0].ping_cm(), 0, 36);
+    // set volVal to the volume sensor distance, with a min of 5 cm and a max of 30 cm
+    int volVal = constrain(sonar[1].ping_cm(), 5, 30);
+
+    // print out the filtered pitch sensor distance
+    Serial.print("Pitch: " + String(pitchVal));
+    // print out the filtered volume sensor distance
+    Serial.print(" Volume: " + String(volVal));
+    // separate the values from whatever is printed next
+    Serial.println();
+
+    // loose tone
+    // uncomment this and comment out the rigid tone section for fluid frequency changing
+    // map the pitch values to fit within a specific octave's note range
+    // int noteValue = map(pitchVal, 0, 36, notes[octavestart[octave]], notes[octaveend[octave]]);
+    // play the tone matching the mapped distance
+    // tone1.tone(noteValue);
+
+    // rigid tone
+    // map the pitch values to fit within a specific octave's index range
+    int noteValue = map(pitchVal, 0, 36, octavestart[octave], octaveend[octave]);
+    // play the note matching the index-mapped distance
+    tone1.tone(notes[noteValue]);
+
+    // volume control
+    // if the volume sensor reads as no value or 0
+    if (sonar[1].ping_cm() == 0) {
+      // turn off the white LED
+      analogWrite(6, 0);
+    } else {
+      // otherwise map the volume sensor distance to the white LED's brightness 
+      analogWrite(6, map(volVal, 5, 30, 255, 0));
+    }
+
+    // beat control
+    // if the beat duration is between .03 and .5 seconds
+    if (duration > 30 && duration < 500) {
+      // turn on the red LED
+      digitalWrite(7, HIGH);
+      // wait the beat duration
+      delay(duration);
+      // turn off the red LED
+      digitalWrite(7, LOW);
+      // stop the current note from playing
+      tone1.noTone();
+      // wait twice the beat duration
+      delay(duration * 2);
+    }
+
+  }
+}</pre>
           <h2> Circuit Operation </h2>   
           <iframe src="https://drive.google.com/file/d/15dnHYmiw-p6uYPh58epW-KwstOiMa15j/preview" width="640" height="480"></iframe>
           <br/> 
