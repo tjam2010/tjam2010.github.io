@@ -38,7 +38,7 @@
           Image 2. A schematic of the 3 part circuit.
           <br/> 
           <h3>Pitch</h3>
-          The pitch controlling portion of the project uses one ultrasonic sensor and a passive buzzer. Our passive buzzer can operate between 4 and 8 volts, so the default output for a pin of 5 volts is fine for our purposes. The ultrasonic sensors have interal resistance, so we don't need to calculate for resistors ourselves. The Vcc pin is rated for 5 volts or more, so we can power that with our direct 5 volt supply, and we can connect the ground pin to our Arduino's ground. The trigger pin is used to send a high frequency sound and the echo pin recieves it. We use a library to calculate a distance from the returned values and can set the pins in our code, so we can plug our trigger receiving input into pin 13 and our echo outputting to the Arduino into pin 12, though this could be changed in the code. We will be using the input from this sensor in the code to set our tone frequencies.
+          The pitch controlling portion of the project uses one ultrasonic sensor and a passive buzzer. Our passive buzzer can be plugged directly into our Arduino, according to the Elegoo Kit Specs found <a href="http://www.elegoo.com/download/">here</a>, and can operate between 4 and 8 volts, so the default output for a pin of 5 volts is fine for our purposes. The ultrasonic sensors have interal resistance, so we don't need to calculate for resistors ourselves. The Vcc pin is rated for 5 volts or more, so we can power that with our direct 5 volt supply, and we can connect the ground pin to our Arduino's ground. The trigger pin is used to send a high frequency sound and the echo pin recieves it. We use a library to calculate a distance from the returned values and can set the pins in our code, so we can plug our trigger receiving input into pin 13 and our echo outputting to the Arduino into pin 12, though this could be changed in the code. We will be using the input from this sensor in the code to set our tone frequencies.
           <br/> 
           <h3>Volume</h3>
           Volume control is slightly more complicated than the pitch. According to the Elegoo Kit Specs found <a href="http://www.elegoo.com/download/">here</a>, our buzzer can be directly attached to an Arduino pin to maximize its volume. Because the buzzer is passive, we need to manipulate the current going through the buzzer to change the volume. To do this, one could ideally use a digital potentiometer. In completing this project, I did not have one, so I instead employed two photoresistors and an LED. The LED is white and uses a 100 ohm resistor. Because our input voltage is 5 volts and the white LED has a drop of approximately 3.2 volts:
@@ -68,7 +68,7 @@
           <br/> 
           <br/>
           <h2> Circuit </h2>
-          <img src="fp_circuit.JPG" width=800></a>
+          <img src="fp_circuit.JPG" width=650></a>
           <br/> 
           Image 3. The final circuit, with two ultrasonic sensors, two photoresistors, two leds, a button, and a buzzer.
           <h2> Code </h2>
@@ -197,7 +197,16 @@ void loop()
           <h2> Circuit Operation </h2>   
           <iframe src="https://drive.google.com/file/d/15dnHYmiw-p6uYPh58epW-KwstOiMa15j/preview" width="640" height="480"></iframe>
           <br/> 
-          Image 4. Here you can see...
+          Image 4. Here you can see the final theremin in operation. The theremin operates similar to a standard one, where moving your hands closer and further from the device can change the pitch and volume. In our case, however, the features are implemented with code. To summarize how everything works:
+          <br>
+          <h3>Pitch</h3>
+          The pitch is controlled by how close an object is to the ultrasonic sensor on the side. Closer readings are lower pitched and farther readings are higher pitched. The pitch is set in the code to corresond to the input distance. The placement of this sensor functions similarly to the antenna of a real theremin.
+          <br>
+          <h3>Volume</h3>
+          The volume is controlled by how close an object is to the top ultrasonic sensor. Closer readings are louder (except for those directly touching the sensor, which are silent) and farther readings are quieter. This volume is set by changing the analog brightness of a white LED inside of the Arduino theremin, where closer is brighter and further is dimmer. Two photoresistors react to this brightness and resist the current more when the LED is dark and less when it is bright, where current and volume increase and decrease together. The placement of the volume sensor allows for similar interaction to that of a real theremin, where moving a hand up and down changes the volume, though in place of the standard ring used, we have simply attached our sensor straight to the box.
+          <br>
+          <h3>Tempo</h3>
+          Lastly, the tempo is set by pressing a button on the theremin. The time which the button is held for equals the set beat duration. The longer that the button is held, the longer each note is, with a maximum of half a second. The pause between each note is double the individual beat duration. The red LED flashes in sync with the output beat for monitoring the set tempo. This is a feature which can be used to make more melodic sound, though it is not necessarily standard for a theremin.
         </div>
     </body>
 </html>
