@@ -17,6 +17,7 @@
           <br/>        
           Image 1. An animation of my theremin in action.</p>
           </p>
+          <br/>
         </div>
         <div>
           <h1>Concept</h1>
@@ -27,19 +28,34 @@
           <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Theramin-Alexandra-Stepanoff-1930.jpg" width=400/>
           <br/>        
           I ultimately decided that I wanted to take a crack at making a theremin, albeit a digital one. A theremin is an electronic musical instrument which does not require the musician to touch it. In a theremin, both pitch and volume can be altered by moving one's hands closer and further from it. Based on this instrument, I decided to set out to create an Arduino product which could sense the distance of one's hands and play the matching tones. The reason I chose to use Arduino as opposed to creating a theremin closer to the original is so that I might manipulate the sounds coming from the device or easily convert them to digital music in the future.
+          <br/>
         </div>
         <div>
           <h1>Technical Documentation</h1>
           <h2> Schematic </h2>
-          <img src="fp_schematic.JPG" width=400></a>
+          <img src="fp_schematic.JPG" style="transform:rotate(90deg);" width=400></a>
           <br/> 
           Image 2. A schematic of the 3 part circuit.
+          <br/> 
           <h3>Pitch</h3>
-
+          The pitch controlling portion of the project uses one ultrasonic sensor and a passive buzzer. Our passive buzzer can operate between 4 and 8 volts, so the default output for a pin of 5 volts is fine for our purposes. The ultrasonic sensors have interal resistance, so we don't need to calculate for resistors ourselves. The Vcc pin is rated for 5 volts or more, so we can power that with our direct 5 volt supply, and we can connect the ground pin to our Arduino's ground. The trigger pin is used to send a high frequency sound and the echo pin recieves it. We use a library to calculate a distance from the returned values and can set the pins in our code, so we can plug our trigger receiving input into pin 13 and our echo outputting to the Arduino into pin 12, though this could be changed in the code. We will be using the input from this sensor in the code to set our tone frequencies.
+          <br/> 
           <h3>Volume</h3>
-
+          Volume control is slightly more complicated than the pitch. According to the Elegoo Kit Specs found <a src="http://www.elegoo.com/download/">here</a>, our buzzer can be directly attached to an Arduino pin to maximize its volume. Because the buzzer is passive, we need to manipulate the current going through the buzzer to change the volume. To do this, one could ideally use a digital potentiometer. In completing this project, I did not have one, so I instead employed two photoresistors and an LED. The LED is white and uses a 100 ohm resistor. Because our input voltage is 5 volts and the white LED has a drop of approximately 3.2 volts:
+          <pre>V = I x R
+5-3.2 = .02 x R
+1.8/.02 = R
+90 = R</pre>
+          Our minimum resistance is 90 ohms. I used a 100 ohm resistor to get close to that minimum resistance and maximum brightness to most effectively interact with the light-sensing photoresistors. The photoresistors are wired in series with the buzzer, but in parallel with each other to result in half the resistance of a single photoresistor. The photoresistors are then pointed directly at the changing LED so that they can react accordingly. Finally, of course, we use an ultrasonic sensor in the same way as the first one (though we use pins 11 and 10), however in this case we map the distance to change the brightness of the LED, where a brighter LED means a lower resistance, larger current, and greater volume.
+          <pre>1/R1 + 1/R2 = 1/Rtotal
+1/R-photo + 1/R-photo = 1/Rtotal
+2/R-photo = 1/Rtotal
+1/2 R-photo = Rtotal</pre>
+          This reduced resistance allows for a louder overall buzzer when the resistance is a bit higher, which I decided was needed after seeing how quiet the buzzer was otherwise.
+          <br/> 
           <h3>Tempo</h3>
 
+          <br/> 
           <br/>
           <h2> Circuit </h2>
           <img src="fp_circuit.JPG" width=400></a>
